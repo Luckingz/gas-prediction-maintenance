@@ -88,22 +88,22 @@ st.markdown(
         border-radius: 5px;
         padding: 10px 20px;
     }
-    .stNumberInput, .stSelectbox div {
+    .stNumberInput, .stSelectbox {
         background-color: var(--input-bg-color, #ffffff);
         color: var(--input-text-color, #000000) !important;
         border-radius: 5px;
         padding: 5px;
-        min-height: 40px;
-        overflow: visible;
+        margin-bottom: 10px;
+    }
+    .stNumberInput label, .stSelectbox label {
+        color: var(--text-color) !important; /* Ensure labels match theme */
+        font-weight: bold;
+        display: block; /* Ensure label is on its own line */
+        margin-bottom: 5px;
     }
     .stSelectbox div[role="listbox"] {
         color: var(--input-text-color, #000000) !important;
         background-color: var(--input-bg-color, #ffffff) !important;
-    }
-    .stSelectbox label {
-        color: var(--text-color) !important; /* Ensure labels are visible */
-        font-weight: bold;
-        margin-bottom: 5px;
     }
     .result-box {
         background-color: var(--result-bg-color, #ffeb3b);
@@ -128,16 +128,16 @@ st.markdown(
         .main {
             background-color: #1a1a1a;
         }
-        .stNumberInput, .stSelectbox div {
+        .stNumberInput, .stSelectbox {
             background-color: #2e2e2e;
             color: #ffffff !important;
+        }
+        .stNumberInput label, .stSelectbox label {
+            color: #dcdcdc !important; /* Dark mode label color */
         }
         .stSelectbox div[role="listbox"] {
             color: #ffffff !important;
             background-color: #2e2e2e !important;
-        }
-        .stSelectbox label {
-            color: #dcdcdc !important; /* Dark mode label color */
         }
         .result-box {
             background-color: #ff9800;
@@ -152,16 +152,16 @@ st.markdown(
         .main {
             background-color: #f0f2f6;
         }
-        .stNumberInput, .stSelectbox div {
+        .stNumberInput, .stSelectbox {
             background-color: #ffffff;
             color: #000000 !important;
+        }
+        .stNumberInput label, .stSelectbox label {
+            color: #2c3e50 !important; /* Light mode label color */
         }
         .stSelectbox div[role="listbox"] {
             color: #000000 !important;
             background-color: #ffffff !important;
-        }
-        .stSelectbox label {
-            color: #2c3e50 !important; /* Light mode label color */
         }
         .result-box {
             background-color: #ffeb3b;
