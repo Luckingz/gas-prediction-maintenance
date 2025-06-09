@@ -90,10 +90,20 @@ st.markdown(
     }
     .stNumberInput, .stSelectbox div {
         background-color: var(--input-bg-color, #ffffff);
-        color: var(--input-text-color, #000000);
+        color: var(--input-text-color, #000000) !important;
         border-radius: 5px;
         padding: 5px;
-        min-height: 40px; /* Ensure selectbox is visible */
+        min-height: 40px;
+        overflow: visible;
+    }
+    .stSelectbox div[role="listbox"] {
+        color: var(--input-text-color, #000000) !important;
+        background-color: var(--input-bg-color, #ffffff) !important;
+    }
+    .stSelectbox label {
+        color: var(--text-color) !important; /* Ensure labels are visible */
+        font-weight: bold;
+        margin-bottom: 5px;
     }
     .result-box {
         background-color: var(--result-bg-color, #ffeb3b);
@@ -120,7 +130,14 @@ st.markdown(
         }
         .stNumberInput, .stSelectbox div {
             background-color: #2e2e2e;
-            color: #ffffff;
+            color: #ffffff !important;
+        }
+        .stSelectbox div[role="listbox"] {
+            color: #ffffff !important;
+            background-color: #2e2e2e !important;
+        }
+        .stSelectbox label {
+            color: #dcdcdc !important; /* Dark mode label color */
         }
         .result-box {
             background-color: #ff9800;
@@ -137,7 +154,14 @@ st.markdown(
         }
         .stNumberInput, .stSelectbox div {
             background-color: #ffffff;
-            color: #000000;
+            color: #000000 !important;
+        }
+        .stSelectbox div[role="listbox"] {
+            color: #000000 !important;
+            background-color: #ffffff !important;
+        }
+        .stSelectbox label {
+            color: #2c3e50 !important; /* Light mode label color */
         }
         .result-box {
             background-color: #ffeb3b;
@@ -168,6 +192,10 @@ with col2:
     # Use correct column names and handle potential None values
     material_options = data['Material'].dropna().unique().tolist() if 'Material' in data.columns else ['Unknown']
     grade_options = data['Grade'].dropna().unique().tolist() if 'Grade' in data.columns else ['Unknown']
+    if not material_options:
+        material_options = ['No Material Data']
+    if not grade_options:
+        grade_options = ['No Grade Data']
     material = st.selectbox("Material", options=material_options, key="material")
     grade = st.selectbox("Grade", options=grade_options, key="grade")
 
