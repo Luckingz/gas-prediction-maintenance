@@ -69,23 +69,77 @@ print(classification_report(y_test, y_pred))
 
 import streamlit as st
 
-st.title("Pipeline Maintenance Predictor")
-pressure = st.number_input("Max Pressure (psi)")
-temp = st.number_input("Temperature (°C)")
-corrosion = st.number_input("Corrosion Impact (%)")
-loss = st.number_input("Thickness Loss (mm)")
-years = st.number_input("Time Years")
-material = st.selectbox("Material", options=dataset['Material'].unique())
-grade = st.selectbox("Grade", options=dataset['Material'].unique())  # Adjust if different
+# Streamlit UI Styling
+st.set_page_config(page_title="Pipeline Maintenance Predictor", layout="wide", page_icon=":factory:")
+st.markdown(
+    """
+    <style>
+    .main {
+        background-color: #f0f2f6;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    .stButton>button {
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 5px;
+        padding: 10px 20px;
+    }
+    .stSelectbox div {
+        background-color: #ffffff;
+        border-radius: 5px;
+        padding: 5px;
+    }
+    .result-box {
+        background-color: #ffeb3b;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-top: 20px;
+    }
+    .header {
+        color: #2c3e50;
+        text-align: center;
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# Create input DataFrame with encoded columns
-input_data = pd.DataFrame([[pressure, temp, corrosion, loss, 0, years, 0, 0, material, grade]],
-                          columns=['Pipe_Size_mm', 'Thickness_mm', 'Max_Pressure_psi',
-                                   'Temperature_C', 'Corrosion_Impact_Percent', 'Thickness_Loss_mm',
-                                   'Material_Loss_Percent', 'Time_Years', 'Material', 'Grade'])
-input_data = pd.get_dummies(input_data, columns=['Material', 'Grade'], drop_first=True)
-input_data = input_data.reindex(columns=features, fill_value=0)  # Align with training columns
+# Header
+st.markdown('<div class="header">Gas Pipeline Maintenance Predictor</div>', unsafe_allow_html=True)
 
-prediction = model.predict(input_data)
-st.write("Condition:", prediction[0])
+# Input Section
+col1, col2 = st.columns(2)
+with col1:
+    pressure = st.number_input("Max Pressure (psi)", min_value=0.0, step=1.0)
+    temp = st.number_input("Temperature (°C)", min_value=0.0, step=1.0)
+    corrosion = st.number_input("Corrosion Impact (%)", min_value=0.0, max_value=100.0, step=1.0)
+with col2:
+    loss = st.number_input("Thickness Loss (mm)", min_value=0.0, step=0.1)
+    years = st.number_input("Time Years", min_value=0.0, step=1.0)
+    material = st.selectbox("Material", options=data['Material'].unique())
+    grade = st.selectbox("Grade", options=data['Grade'].unique())
+
+# Predict Button
+if st.button("Predict Condition"):
+    input_data = pd.DataFrame([[pressure, temp, corrosion, loss, 0, years, 0, 0, material, grade]], 
+                              columns=['Pipe_Size_mm', 'Thickness_mm', 'Max_Pressure_psi', 
+                                       'Temperature_C', 'Corrosion_Impact_Percent', 'Thickness_Loss_mm', 
+                                       'Material_Loss_Percent', 'Time_Years', 'Material', 'Grade'])
+    input_data = pd.get_dummies(input_data, columns=['Material', 'Grade'], drop_first=True)
+    input_data = input_data.reindex(columns=X.columns, fill_value=0)
+    prediction = model.predict(input_data)[0]
+    
+    # Display result in a colored box
+    st.markdown(f'<div class="result-box">Condition: {prediction}</div>', unsafe_allow_html=True)
+
+# Footer
+st.markdown("<p style='text-align: center; color: #7f8c8d;'>Powered by AGIS Hackathon 2025</p>", unsafe_allow_html=True)
 
