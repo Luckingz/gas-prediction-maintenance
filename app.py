@@ -104,13 +104,11 @@ st.markdown(
         background-color: #ffffff;
     }
     .result-box {
-        background-color: #ffeb3b;
         padding: 20px;
         border-radius: 10px;
         text-align: center;
         font-size: 24px;
         font-weight: bold;
-        color: #333;
         margin-top: 20px;
         border: 2px solid #ccc;
     }
@@ -137,8 +135,6 @@ st.markdown(
             background-color: #2e2e2e;
         }
         .result-box {
-            background-color: #ff9800;
-            color: #ffffff;
             border-color: #555;
         }
         .header {
@@ -156,15 +152,15 @@ st.markdown('<div class="header">Gas Pipeline Maintenance Predictor</div>', unsa
 # Input Section with Columns
 col1, col2 = st.columns(2)
 with col1:
-    st.number_input("Max Pressure (psi)", min_value=0.0, step=1.0, key="pressure")
-    st.number_input("Temperature (°C)", min_value=0.0, step=1.0, key="temp")
-    st.number_input("Corrosion Impact (%)", min_value=0.0, max_value=100.0, step=1.0, key="corrosion")
+    pressure = st.number_input("Max Pressure (psi)", min_value=0.0, step=1.0, key="pressure")
+    temp = st.number_input("Temperature (°C)", min_value=0.0, step=1.0, key="temp")
+    corrosion = st.number_input("Corrosion Impact (%)", min_value=0.0, max_value=100.0, step=1.0, key="corrosion")
 with col2:
-    st.number_input("Thickness Loss (mm)", min_value=0.0, step=0.1, key="loss")
-    st.number_input("Time Years", min_value=0.0, step=1.0, key="years")
+    loss = st.number_input("Thickness Loss (mm)", min_value=0.0, step=0.1, key="loss")
+    years = st.number_input("Time Years", min_value=0.0, step=1.0, key="years")
     # Material and Grade as selectboxes with visible labels
-    material_options = dataset['Material'].dropna().unique().tolist() if 'Material' in dataset.columns else ['Unknown']
-    grade_options = dataset['Grade'].dropna().unique().tolist() if 'Grade' in dataset.columns else ['Unknown']
+    material_options = data['Material'].dropna().unique().tolist() if 'Material' in data.columns else ['Unknown']
+    grade_options = data['Grade'].dropna().unique().tolist() if 'Grade' in data.columns else ['Unknown']
     if not material_options:
         material_options = ['No Material Data']
     if not grade_options:
@@ -187,9 +183,9 @@ if st.button("Predict Condition", key="predict"):
     input_data = input_data.reindex(columns=X.columns, fill_value=0)
     prediction = model.predict(input_data)[0]
     
-    color = "#ff4444" if "Critical" in prediction else "#ffca28" if "Moderate" in prediction else "#00cc00"
-    st.markdown(f'<div class="result-box" style="background-color: {color};">Condition: {prediction}</div>', unsafe_allow_html=True)
+    # Dynamic result box color based on condition
+    color = "#ff0000" if "Critical" in prediction else "#ffff00" if "Normal" in prediction else "#00ff00" # Red for Critical, Yellow for Normal, Green for others
+    st.markdown(f'<div class="result-box" style="background-color: {color}; color: #000000;">Condition: {prediction}</div>', unsafe_allow_html=True)
 
 # Footer
 st.markdown("<p style='text-align: center; color: #7f8c8d;'>Powered by AGIS Hackathon 2025</p>", unsafe_allow_html=True)
-
