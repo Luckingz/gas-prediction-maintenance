@@ -163,8 +163,8 @@ with col2:
     st.number_input("Thickness Loss (mm)", min_value=0.0, step=0.1, key="loss")
     st.number_input("Time Years", min_value=0.0, step=1.0, key="years")
     # Material and Grade as selectboxes with visible labels
-    material_options = data['Material'].dropna().unique().tolist() if 'Material' in data.columns else ['Unknown']
-    grade_options = data['Grade'].dropna().unique().tolist() if 'Grade' in data.columns else ['Unknown']
+    material_options = dataset['Material'].dropna().unique().tolist() if 'Material' in dataset.columns else ['Unknown']
+    grade_options = dataset['Grade'].dropna().unique().tolist() if 'Grade' in data.columns else ['Unknown']
     if not material_options:
         material_options = ['No Material Data']
     if not grade_options:
