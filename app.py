@@ -124,8 +124,8 @@ with col1:
 with col2:
     loss = st.number_input("Thickness Loss (mm)", min_value=0.0, step=0.1)
     years = st.number_input("Time Years", min_value=0.0, step=1.0)
-    material = st.selectbox("Material", options=data['Material'].unique())
-    grade = st.selectbox("Grade", options=data['Grade'].unique())
+    material = st.selectbox("Material", options=dataset['Material'].unique())
+    grade = st.selectbox("Grade", options=dataset['Grade'].unique())
 
 # Predict Button
 if st.button("Predict Condition"):
