@@ -69,75 +69,72 @@ print(classification_report(y_test, y_pred))
 
 import streamlit as st
 
-# Set page configuration to use system theme
+# Set page configuration
 st.set_page_config(page_title="Gas Pipeline Maintenance Predictor", layout="wide", page_icon=":factory:")
 
-# Custom CSS for theme-aware design
+# Custom CSS to ensure label visibility
 st.markdown(
     """
     <style>
     .main {
-        background-color: var(--background-color);
-        color: var(--text-color);
+        background-color: #f0f2f6;
         padding: 20px;
         border-radius: 10px;
     }
     .stButton>button {
-        background-color: var(--button-color, #4CAF50);
-        color: var(--button-text-color, white);
+        background-color: #4CAF50;
+        color: white;
         border-radius: 5px;
         padding: 10px 20px;
     }
     .stNumberInput, .stSelectbox {
-        background-color: var(--input-bg-color, #ffffff);
-        color: var(--input-text-color, #000000) !important;
+        background-color: #ffffff;
         border-radius: 5px;
         padding: 5px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
     .stNumberInput label, .stSelectbox label {
-        color: var(--text-color) !important; /* Ensure labels match theme */
+        color: #2c3e50 !important; /* Default label color */
         font-weight: bold;
-        display: block; /* Ensure label is on its own line */
+        display: block;
         margin-bottom: 5px;
     }
     .stSelectbox div[role="listbox"] {
-        color: var(--input-text-color, #000000) !important;
-        background-color: var(--input-bg-color, #ffffff) !important;
+        color: #000000;
+        background-color: #ffffff;
     }
     .result-box {
-        background-color: var(--result-bg-color, #ffeb3b);
+        background-color: #ffeb3b;
         padding: 20px;
         border-radius: 10px;
         text-align: center;
         font-size: 24px;
         font-weight: bold;
-        color: var(--result-text-color, #333);
+        color: #333;
         margin-top: 20px;
-        border: 2px solid var(--result-border-color, #ccc);
+        border: 2px solid #ccc;
     }
     .header {
-        color: var(--header-color, #2c3e50);
+        color: #2c3e50;
         text-align: center;
         font-size: 36px;
         font-weight: bold;
         margin-bottom: 20px;
     }
-    /* Theme-specific adjustments */
+    /* Dark mode adjustments */
     @media (prefers-color-scheme: dark) {
         .main {
             background-color: #1a1a1a;
         }
         .stNumberInput, .stSelectbox {
             background-color: #2e2e2e;
-            color: #ffffff !important;
         }
         .stNumberInput label, .stSelectbox label {
             color: #dcdcdc !important; /* Dark mode label color */
         }
         .stSelectbox div[role="listbox"] {
-            color: #ffffff !important;
-            background-color: #2e2e2e !important;
+            color: #ffffff;
+            background-color: #2e2e2e;
         }
         .result-box {
             background-color: #ff9800;
@@ -146,30 +143,6 @@ st.markdown(
         }
         .header {
             color: #dcdcdc;
-        }
-    }
-    @media (prefers-color-scheme: light) {
-        .main {
-            background-color: #f0f2f6;
-        }
-        .stNumberInput, .stSelectbox {
-            background-color: #ffffff;
-            color: #000000 !important;
-        }
-        .stNumberInput label, .stSelectbox label {
-            color: #2c3e50 !important; /* Light mode label color */
-        }
-        .stSelectbox div[role="listbox"] {
-            color: #000000 !important;
-            background-color: #ffffff !important;
-        }
-        .result-box {
-            background-color: #ffeb3b;
-            color: #333;
-            border-color: #ccc;
-        }
-        .header {
-            color: #2c3e50;
         }
     }
     </style>
@@ -183,13 +156,13 @@ st.markdown('<div class="header">Gas Pipeline Maintenance Predictor</div>', unsa
 # Input Section with Columns
 col1, col2 = st.columns(2)
 with col1:
-    pressure = st.number_input("Max Pressure (psi)", min_value=0.0, step=1.0, key="pressure")
-    temp = st.number_input("Temperature (°C)", min_value=0.0, step=1.0, key="temp")
-    corrosion = st.number_input("Corrosion Impact (%)", min_value=0.0, max_value=100.0, step=1.0, key="corrosion")
+    st.number_input("Max Pressure (psi)", min_value=0.0, step=1.0, key="pressure")
+    st.number_input("Temperature (°C)", min_value=0.0, step=1.0, key="temp")
+    st.number_input("Corrosion Impact (%)", min_value=0.0, max_value=100.0, step=1.0, key="corrosion")
 with col2:
-    loss = st.number_input("Thickness Loss (mm)", min_value=0.0, step=0.1, key="loss")
-    years = st.number_input("Time Years", min_value=0.0, step=1.0, key="years")
-    # Use correct column names and handle potential None values
+    st.number_input("Thickness Loss (mm)", min_value=0.0, step=0.1, key="loss")
+    st.number_input("Time Years", min_value=0.0, step=1.0, key="years")
+    # Material and Grade as selectboxes with visible labels
     material_options = data['Material'].dropna().unique().tolist() if 'Material' in data.columns else ['Unknown']
     grade_options = data['Grade'].dropna().unique().tolist() if 'Grade' in data.columns else ['Unknown']
     if not material_options:
@@ -199,8 +172,13 @@ with col2:
     material = st.selectbox("Material", options=material_options, key="material")
     grade = st.selectbox("Grade", options=grade_options, key="grade")
 
-# Predict Button
+# Predict Button (using stored inputs)
 if st.button("Predict Condition", key="predict"):
+    pressure = st.session_state.get("pressure", 0.0)
+    temp = st.session_state.get("temp", 0.0)
+    corrosion = st.session_state.get("corrosion", 0.0)
+    loss = st.session_state.get("loss", 0.0)
+    years = st.session_state.get("years", 0.0)
     input_data = pd.DataFrame([[pressure, temp, corrosion, loss, 0, years, 0, 0, material, grade]], 
                               columns=['Pipe_Size_mm', 'Thickness_mm', 'Max_Pressure_psi', 
                                        'Temperature_C', 'Corrosion_Impact_Percent', 'Thickness_Loss_mm', 
@@ -209,9 +187,9 @@ if st.button("Predict Condition", key="predict"):
     input_data = input_data.reindex(columns=X.columns, fill_value=0)
     prediction = model.predict(input_data)[0]
     
-    # Dynamic result box color based on condition
     color = "#ff4444" if "Critical" in prediction else "#ffca28" if "Moderate" in prediction else "#00cc00"
     st.markdown(f'<div class="result-box" style="background-color: {color};">Condition: {prediction}</div>', unsafe_allow_html=True)
 
 # Footer
-st.markdown("<p style='text-align: center; color: var(--text-color, #7f8c8d);'>Powered by AGIS Hackathon 2025</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #7f8c8d;'>Powered by AGIS Hackathon 2025</p>", unsafe_allow_html=True)
+
