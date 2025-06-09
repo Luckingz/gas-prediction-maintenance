@@ -184,7 +184,7 @@ if st.button("Predict Condition", key="predict"):
     prediction = model.predict(input_data)[0]
     
     # Dynamic result box color based on condition
-    color = "#ff0000" if "Critical" in prediction else "#ffff00" if "Normal" in prediction else "#00ff00" # Red for Critical, Yellow for Normal, Green for others
+    color = "#ff0000" if "Critical" in prediction else "#00ff00" if "Normal" in prediction else "#ffff00" # Red for Critical, Yellow for Normal, Green for others
     st.markdown(f'<div class="result-box" style="background-color: {color}; color: #000000;">Condition: {prediction}</div>', unsafe_allow_html=True)
 
 # Footer
