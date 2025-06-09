@@ -93,6 +93,7 @@ st.markdown(
         color: var(--input-text-color, #000000);
         border-radius: 5px;
         padding: 5px;
+        min-height: 40px; /* Ensure selectbox is visible */
     }
     .result-box {
         background-color: var(--result-bg-color, #ffeb3b);
@@ -164,8 +165,11 @@ with col1:
 with col2:
     loss = st.number_input("Thickness Loss (mm)", min_value=0.0, step=0.1, key="loss")
     years = st.number_input("Time Years", min_value=0.0, step=1.0, key="years")
-    material = st.selectbox("Material", options=data['Material'].unique(), key="material")
-    grade = st.selectbox("Grade", options=data['Grade'].unique(), key="grade")
+    # Use correct column names and handle potential None values
+    material_options = data['Material'].dropna().unique().tolist() if 'Material' in data.columns else ['Unknown']
+    grade_options = data['Grade'].dropna().unique().tolist() if 'Grade' in data.columns else ['Unknown']
+    material = st.selectbox("Material", options=material_options, key="material")
+    grade = st.selectbox("Grade", options=grade_options, key="grade")
 
 # Predict Button
 if st.button("Predict Condition", key="predict"):
