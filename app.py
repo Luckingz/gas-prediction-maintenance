@@ -9,17 +9,11 @@ Original file is located at
 
 import pandas as pd
 import numpy as np
-import kagglehub
 import os
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 
-dataset = kagglehub.dataset_download('muhammadwaqas023/pipeline-dataset-in-oil-and-gas-sector')
-
-print('Data source import complete.')
-
-data_path = '/kaggle/input/pipeline-dataset-in-oil-and-gas-sector/pipe_thickness_loss_dataset.csv'
-dataset = pd.read_csv(data_path, encoding='ascii', delimiter=',')
+dataset = pd.read_csv("pipe_thickness_loss_dataset.csv", encoding='ascii', delimiter=',')
 
 dataset.describe()
 
