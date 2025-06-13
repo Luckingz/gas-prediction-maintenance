@@ -189,9 +189,9 @@ st.markdown("<p style='text-align: center; color: #7f8c8d;'>Powered by AGIS Hack
 # Google Form for User Feedback
 st.subheader("Share Your Experience")
 st.markdown(
-    '<div class="google-form-container">'
-    '<iframe class="google-form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLSez8lf2na9RlgvMZk4IFNrU3_sLhI6oyGZ127ihbeSs2dMblA/viewform?embedded=true" '
-    'frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>'
+    '<div class="google-form-iframe">'
+    '<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSez8lf2na9RlgvMZk4IFNrU3_sLhI6oyGZ127ihbeSs2dMblA/viewform?embedded=true" '
+    'width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>'
     '</div>',
     unsafe_allow_html=True
 )
