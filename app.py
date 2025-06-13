@@ -86,18 +86,25 @@ st.markdown(
         margin-bottom: 20px;
     }
     /* Google Form iframe styling */
-    .google-form-iframe {
+    .google-form-container {
         width: 100%;
         max-width: 640px;
-        height: 800px; /* Reduced for testing, adjust as needed */
+        margin: 20px auto;
+        overflow: hidden; /* Prevent overlap */
+    }
+    .google-form-iframe {
+        width: 100%;
+        height: 600px; /* Adjustable height */
         border: none;
-        background-color: var(--background-color, #f0f2f6);
-        overflow-y: auto; /* Add scrollbar if content overflows */
+        background-color: #1a1a1a !important; /* Force dark mode background */
+        overflow-y: auto; /* Scrollbar for overflow */
+        border-radius: 10px;
     }
     .google-form-iframe * {
-        color: var(--text-color, #2c3e50) !important;
+        color: #dcdcdc !important; /* Force dark mode text */
+        background-color: #1a1a1a !important; /* Ensure consistent background */
     }
-    /* Dark mode adjustments */
+    /* Dark mode adjustments (enforced) */
     @media (prefers-color-scheme: dark) {
         .main {
             background-color: #1a1a1a;
@@ -119,10 +126,18 @@ st.markdown(
             color: #dcdcdc;
         }
         .google-form-iframe {
-            background-color: #1a1a1a;
+            background-color: #1a1a1a !important;
         }
         .google-form-iframe * {
             color: #dcdcdc !important;
+        }
+    }
+    @media (prefers-color-scheme: light) {
+        .google-form-iframe {
+            background-color: #f0f2f6 !important;
+        }
+        .google-form-iframe * {
+            color: #2c3e50 !important;
         }
     }
     </style>
@@ -174,9 +189,9 @@ st.markdown("<p style='text-align: center; color: #7f8c8d;'>Powered by AGIS Hack
 # Google Form for User Feedback
 st.subheader("Share Your Experience")
 st.markdown(
-    '<div class="google-form-iframe">'
-    '<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSez8lf2na9RlgvMZk4IFNrU3_sLhI6oyGZ127ihbeSs2dMblA/viewform?embedded=true" '
-    'width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>'
+    '<div class="google-form-container">'
+    '<iframe class="google-form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLSez8lf2na9RlgvMZk4IFNrU3_sLhI6oyGZ127ihbeSs2dMblA/viewform?embedded=true" '
+    'frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>'
     '</div>',
     unsafe_allow_html=True
 )
