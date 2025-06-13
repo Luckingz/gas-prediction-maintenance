@@ -119,6 +119,17 @@ st.markdown(
         font-weight: bold;
         margin-bottom: 20px;
     }
+    /* Google Form iframe styling */
+    .google-form-iframe {
+        width: 100%;
+        max-width: 640px;
+        height: 2082px;
+        border: none;
+        background-color: var(--background-color, #f0f2f6);
+    }
+    .google-form-iframe * {
+        color: var(--text-color, #2c3e50) !important;
+    }
     /* Dark mode adjustments */
     @media (prefers-color-scheme: dark) {
         .main {
@@ -139,6 +150,12 @@ st.markdown(
         }
         .header {
             color: #dcdcdc;
+        }
+        .google-form-iframe {
+            background-color: #1a1a1a;
+        }
+        .google-form-iframe * {
+            color: #dcdcdc !important;
         }
     }
     </style>
@@ -189,3 +206,14 @@ if st.button("Predict Condition", key="predict"):
 
 # Footer
 st.markdown("<p style='text-align: center; color: #7f8c8d;'>Powered by AGIS Hackathon 2025</p>", unsafe_allow_html=True)
+
+# Google Form for User Feedback
+st.subheader("Share Your Experience")
+st.markdown(
+    '<div class="google-form-iframe">'
+    '<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSez8lf2na9RlgvMZk4IFNrU3_sLhI6oyGZ127ihbeSs2dMblA/viewform?embedded=true" '
+    'width="640" height="2082" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>'
+    '</div>',
+    unsafe_allow_html=True
+)
+
